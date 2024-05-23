@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image/image.dart' as img;
 import 'package:camera/camera.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'image_classification_helper.dart';
 
 class Camera extends StatefulWidget {
   @override
@@ -13,6 +15,10 @@ class Camera extends StatefulWidget {
 }
 
 class _CameraState extends State<Camera> {
+  ImageClassificationHelper? imageClassificationHelper;
+  Map<String, double>? classification;
+  img.Image? image;
+
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
   final TextRecognizer _textRecognizer =
@@ -23,8 +29,11 @@ class _CameraState extends State<Camera> {
 
   @override
   void initState() {
+    imageClassificationHelper = ImageClassificationHelper();
+    imageClassificationHelper!.initHelper();
     super.initState();
     _initializeControllerFuture = _initializeCamera();
+
   }
 
   @override
@@ -40,7 +49,31 @@ class _CameraState extends State<Camera> {
     return _controller.initialize();
   }
 
-  Future<void> _recognizeText() async {
+  Future<void> _processImage() async {
+    print('_processImage() called');
+    if (_isProcessing) return;
+    _isProcessing = true;
+
+    try {
+      final xfile = await _controller.takePicture();
+      final file = File(xfile.path);
+      final imageData = await file.readAsBytes();
+      final image = img.decodeImage(imageData);
+      classification = await imageClassificationHelper?.inferenceImage(image!);
+
+      setState(() {
+        _extractedText = classification.toString();
+      });
+
+      await _speakText();
+    } catch (e) {
+      print('Error: $e');
+    }
+
+    _isProcessing = false;
+  }
+
+  Future<void> _recognizeText()async{
     if (_isProcessing) return;
     _isProcessing = true;
 
@@ -102,13 +135,13 @@ class _CameraState extends State<Camera> {
                     _recognizeText();
                   },
                 ),
-                SizedBox(width: 15.0),
+                SizedBox(width: 30.0),
                 IconButton(
                   icon: Icon(Icons.camera, color: Colors.white),
                   iconSize: 60.0,
                   onPressed: () {
                     _flutterTts.speak('Empezará la detección de tu entorno, espera un momento');
-                    // Acción al presionar el botón de cámara
+                    _processImage();
                   },
                 ),
               ],
