@@ -11,11 +11,9 @@
 10 Perro
 11 Lentes
 12 Llaves
-13 Pajaro
-14 Persona
-15 Teclado
-16 Moneda
-17 Audifonos
-18 Libreta
-19 Reloj
-20 Cartera
+13 Persona
+14 Teclado
+15 Moneda
+16 Laptop
+17 Silla
+18 Mesa

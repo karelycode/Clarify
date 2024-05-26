@@ -33,7 +33,6 @@ class _CameraState extends State<Camera> {
     imageClassificationHelper!.initHelper();
     super.initState();
     _initializeControllerFuture = _initializeCamera();
-
   }
 
   @override
@@ -59,10 +58,11 @@ class _CameraState extends State<Camera> {
       final file = File(xfile.path);
       final imageData = await file.readAsBytes();
       final image = img.decodeImage(imageData);
-      classification = await imageClassificationHelper?.inferenceImage(image!);
+      Map<String, double>? detections = await imageClassificationHelper?.inferenceImage(image!);
+      Map<String, double> filteredDetections = cleanAndFilterDetections(detections!, 0.6);
 
       setState(() {
-        _extractedText = classification.toString();
+        _extractedText = filteredDetections.toString();
       });
 
       await _speakText();
@@ -101,6 +101,21 @@ class _CameraState extends State<Camera> {
     await _flutterTts.speak("Aquí está el resultado: $_extractedText");
   }
 
+  Map<String, double> cleanAndFilterDetections(Map<String, double> detections, double threshold) {
+    // Creamos un nuevo mapa para las detecciones filtradas y limpiadas
+    Map<String, double> filteredDetections = {};
+
+    detections.forEach((key, value) {
+      if (value > threshold) {
+        // Quitamos el número de clase al inicio de la etiqueta si está presente
+        String label = key.replaceFirst(RegExp(r'^\d+\s'), '');
+        filteredDetections[label] = value;
+      }
+    });
+
+    return filteredDetections;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,13 +138,13 @@ class _CameraState extends State<Camera> {
             },
           ),
           Positioned(
-            bottom: 15.0,
+            bottom: 30.0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                  icon: Icon(Icons.description, color: Colors.white),
-                  iconSize: 60.0,
+                  icon: Icon(Icons.description, color: Color(0xFF00ACE6)),
+                  iconSize: 90.0,
                   onPressed: () {
                     _flutterTts.speak('Empezará la detección de texto, espera un momento');
                     _recognizeText();
@@ -137,8 +152,8 @@ class _CameraState extends State<Camera> {
                 ),
                 SizedBox(width: 30.0),
                 IconButton(
-                  icon: Icon(Icons.camera, color: Colors.white),
-                  iconSize: 60.0,
+                  icon: Icon(Icons.camera, color: Color(0xFF00ACE6)),
+                  iconSize: 90.0,
                   onPressed: () {
                     _flutterTts.speak('Empezará la detección de tu entorno, espera un momento');
                     _processImage();
