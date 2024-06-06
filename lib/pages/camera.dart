@@ -59,7 +59,7 @@ class _CameraState extends State<Camera> {
       final imageData = await file.readAsBytes();
       final image = img.decodeImage(imageData);
       Map<String, double>? detections = await imageClassificationHelper?.inferenceImage(image!);
-      Map<String, double> filteredDetections = cleanAndFilterDetections(detections!, 0.6);
+      String filteredDetections = cleanAndFilterDetections(detections!, 0.6);
 
       setState(() {
         _extractedText = filteredDetections.toString();
@@ -101,15 +101,15 @@ class _CameraState extends State<Camera> {
     await _flutterTts.speak("Aquí está el resultado: $_extractedText");
   }
 
-  Map<String, double> cleanAndFilterDetections(Map<String, double> detections, double threshold) {
+  String cleanAndFilterDetections(Map<String, double> detections, double threshold) {
     // Creamos un nuevo mapa para las detecciones filtradas y limpiadas
-    Map<String, double> filteredDetections = {};
+    String filteredDetections = "";
 
     detections.forEach((key, value) {
       if (value > threshold) {
         // Quitamos el número de clase al inicio de la etiqueta si está presente
         String label = key.replaceFirst(RegExp(r'^\d+\s'), '');
-        filteredDetections[label] = value;
+        filteredDetections+=label+"\n";
       }
     });
 
