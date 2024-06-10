@@ -1,3 +1,4 @@
+//Importaciones
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 import 'package:flutter_tts/flutter_tts.dart';
 import 'image_classification_helper.dart';
 
+//Clase principal del widget de Cámara
 class Camera extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {

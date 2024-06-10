@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 
-import 'correo.dart';
 import 'datosPersonales.dart';
 
 class Cuenta extends StatefulWidget{
@@ -50,78 +49,7 @@ class MyCuenta extends State<Cuenta>{
               ),
             ),
             SizedBox(height: 40.0),
-            ElevatedButton(
-              onPressed: () {
-                // Navegar a otra página al presionar este botón
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Correo()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 80.0), // Establecer una altura mínima
-                backgroundColor: Color(0xFF00ACE6),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(13.0), // Agregar bordes redondeados
-                ),
-              ),
-              child: Text(
-                'Correo eléctronico',
-                style: TextStyle(
-                  fontSize: 40.0,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            SizedBox(height: 40.0),
-            ElevatedButton(
-              onPressed: () {
-                // Navegar a otra página al presionar este botón
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Cuenta()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 80.0), // Establecer una altura mínima
-                backgroundColor: Color(0xFF00ACE6),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(13.0), // Agregar bordes redondeados
-                ),
-              ),
-              child: Text(
-                'Métdo de pago',
-                style: TextStyle(
-                  fontSize: 40.0,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            SizedBox(height: 200.0),
-            ElevatedButton(
-              onPressed: () {
-                // Navegar a otra página al presionar este botón
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Cuenta()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 80.0), // Establecer una altura mínima
-                backgroundColor: Color(0xFF4C5EE6),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(13.0), // Agregar bordes redondeados
-                ),
-              ),
-              child: Text(
-                'Cerrar sesión',
-                style: TextStyle(
-                  fontSize: 40.0,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            SizedBox(height: 20.0),
+
 
           ],
         ),
