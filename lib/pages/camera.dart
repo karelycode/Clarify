@@ -121,11 +121,6 @@ class _CameraState extends State<Camera> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF121526),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF121526),
-        title: Text('Camera Stream'),
-      ),
       body: Stack(
         alignment: Alignment.center,
         children: [
@@ -140,27 +135,38 @@ class _CameraState extends State<Camera> {
             },
           ),
           Positioned(
-            bottom: 30.0,
+            bottom: 0.0,
+            left: 25,
+            right: 25,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconButton(
-                  icon: Icon(Icons.description, color: Color(0xFF00ACE6)),
-                  iconSize: 90.0,
-                  onPressed: () {
-                    _flutterTts.speak('Empezará la detección de texto, espera un momento');
-                    _recognizeText();
-                  },
+                CircleAvatar(
+                  radius: 55.0, // Ajusta el radio del botón
+                  backgroundColor: Colors.deepPurple, // Color de fondo
+                  child: IconButton(
+                    icon: Icon(Icons.description, color: Colors.white),
+                    iconSize: 70.0,
+                    onPressed: () {
+                      _flutterTts.speak('Empezará la detección de texto, espera un momento');
+                      _recognizeText();
+                    },
+                  ),
                 ),
-                SizedBox(width: 30.0),
-                IconButton(
-                  icon: Icon(Icons.camera, color: Color(0xFF00ACE6)),
-                  iconSize: 90.0,
-                  onPressed: () {
-                    _flutterTts.speak('Empezará la detección de tu entorno, espera un momento');
-                    _processImage();
-                  },
-                ),
+                Spacer(),
+                CircleAvatar(
+                  radius: 55.0, // Ajusta el radio del botón
+                  backgroundColor: Colors.deepPurple, // Color de fondo
+                  child: IconButton(
+                    icon: Icon(Icons.camera, color: Colors.white),
+                    iconSize: 70.0,
+                    onPressed: () {
+                      _flutterTts.speak('Empezará la detección de tu entorno, espera un momento');
+                      _processImage();
+                    },
+                  ),
+                )
+
               ],
             ),
           ),
